@@ -31,7 +31,7 @@ export default function App() {
 
   return (
     <div>
-      <form onSubmit={submitForm}>
+      <form onSubmit={submitForm} className="form" >
         <InputField
           ref={inputRefs.current[0]}
           name="username"
