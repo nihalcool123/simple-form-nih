@@ -2,6 +2,7 @@ import React, { useState, forwardRef, useImperativeHandle } from "react";
 
 const InputField = forwardRef((props, ref) => {
   const [value, setValue] = useState("");
+  const [error, setError] = useState("");
 
   const handleChange = event => {
     setValue(event.target.value);
@@ -9,15 +10,48 @@ const InputField = forwardRef((props, ref) => {
   };
 
   const validate = () => {
-    return true
-  }
+    if (props.validation) {
+      const rules = props.validation.split("|");
+
+      for (let i = 0; i < rules.length; ++i) {
+        const current = rules[0];
+
+        if (current === "required") {
+          if (!value) {
+            setError("This field is required");
+            return false;
+          }
+        }
+        const pair = current.split(":");
+        switch (pair[0]) {
+          case "min":
+            if (value.length < pair[1]) {
+              setError(
+                `This field must be atleast ${pair[1]} characters long `
+              );
+              return false;
+            }
+            break;
+          case "max":
+            if (value.length > pair[1]) {
+               setError(
+                `This field must be no longer than ${pair[1]} characters long `
+              );
+              return false;
+            }
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  };
 
   useImperativeHandle(ref, () => {
     return {
       validate: () => validate()
-    }
-  })
-
+    };
+  });
 
   return (
     <div className="input-wrapper">
@@ -39,7 +73,8 @@ InputField.defaultProps = {
   name: "",
   type: "text",
   value: "",
-  autoComplete: "off"
+  autoComplete: "off",
+  validation: ""
 };
 
 export default InputField;

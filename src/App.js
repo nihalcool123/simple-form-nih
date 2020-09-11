@@ -9,23 +9,43 @@ export default function App() {
   const handleChange = (name, value) => {
     setData(prev => ({ ...prev, [name]: value }));
   };
-  console.log(data);
+  console.log(inputRefs);
+
+  const submitForm = e => {
+    e.preventDefault();
+    let isValid = true;
+
+    for (let i = 0; i < inputRefs.current.length; ++i) {
+      const valid = inputRefs.current[i].current.validate();
+      console.log(valid);
+      if (!isValid) {
+        isValid = false;
+      }
+    }
+
+    if(!isValid) {
+      return
+    }
+    console.log("Loggedin")
+  };
 
   return (
     <div>
-      <form>
+      <form onSubmit={submitForm}>
         <InputField
-          ref={inputRefs}
+          ref={inputRefs.current[0]}
           name="username"
           label="Username"
           onChange={handleChange}
+          validation={"required|min:6|max:12"}
         />
         <InputField
-          ref={inputRefs}
+          ref={inputRefs.current[1]}
           name="password"
           label="Password"
           onChange={handleChange}
         />
+        <button type="submit">Login</button>
       </form>
     </div>
   );
