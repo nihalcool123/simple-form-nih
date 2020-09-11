@@ -44,6 +44,7 @@ export default function App() {
           name="password"
           label="Password"
           onChange={handleChange}
+          validation={"required|min:6|max:12"}
         />
         <button type="submit">Login</button>
       </form>

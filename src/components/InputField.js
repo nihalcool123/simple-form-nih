@@ -46,6 +46,7 @@ const InputField = forwardRef((props, ref) => {
         }
       }
     }
+    return true
   };
 
   useImperativeHandle(ref, () => {
