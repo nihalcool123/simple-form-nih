@@ -6,6 +6,7 @@ const InputField = forwardRef((props, ref) => {
 
   const handleChange = event => {
     setValue(event.target.value);
+    setError("")
     props.onChange(event.target.name, event.target.value);
   };
 
@@ -34,7 +35,7 @@ const InputField = forwardRef((props, ref) => {
             break;
           case "max":
             if (value.length > pair[1]) {
-               setError(
+              setError(
                 `This field must be no longer than ${pair[1]} characters long `
               );
               return false;
@@ -64,6 +65,7 @@ const InputField = forwardRef((props, ref) => {
         value={props.value ? props.value : value}
         autoComplete={props.autoComplete}
       />
+      {error && <p className="error">{error}</p>}
     </div>
   );
 });
